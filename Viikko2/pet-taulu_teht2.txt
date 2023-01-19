@@ -1,0 +1,76 @@
+a) Minkä nimisiä omistajia taulussa on ? Tulosta omistajan nimi vain kerran.
+
+mysql> SELECT DISTINCT owner FROM pet;
++--------+
+| owner  |
++--------+
+| Harold |
+| Gwen   |
+| Benny  |
+| Diane  |
++--------+
+4 rows in set (0.00 sec)
+
+b) Tulosta lemmikkien nimet aakkosjärjestyksessä.
+
+mysql> SELECT DISTINCT name FROM pet ORDER BY name ASC;
++----------+
+| name     |
++----------+
+| Bowser   |
+| Buffy    |
+| Chirpy   |
+| Claws    |
+| Fang     |
+| Fluffy   |
+| Slim     |
+| Whistler |
++----------+
+8 rows in set (0.00 sec)
+
+c) Tulosta kaikki elossa olevat lemmikit.
+
+mysql> SELECT DISTINCT name FROM pet WHERE death IS NULL;
++----------+
+| name     |
++----------+
+| Fluffy   |
+| Claws    |
+| Buffy    |
+| Fang     |
+| Whistler |
+| Slim     |
++----------+
+6 rows in set (0.00 sec)
+
+d) Tulosta kaikki omistajat, joiden nimi alkaa kirjaimella H.
+
+mysql> SELECT DISTINCT owner FROM pet WHERE owner LIKE 'H%';
++--------+
+| owner  |
++--------+
+| Harold |
++--------+
+1 row in set (0.00 sec)
+
+e) Tulosta kaikki lemmikit, joiden nimessä esiintyy kirjaimet ff.
+
+mysql> SELECT DISTINCT name FROM pet WHERE name LIKE '%ff%';
++--------+
+| name   |
++--------+
+| Fluffy |
+| Buffy  |
++--------+
+2 rows in set (0.00 sec)
+
+f) Tulosta kaikki lemmikit, joiden nimessä on 4 kirjainta.
+
+mysql> SELECT DISTINCT name FROM pet WHERE name LIKE '____';
++------+
+| name |
++------+
+| Fang |
+| Slim |
++------+
+2 rows in set (0.00 sec)
