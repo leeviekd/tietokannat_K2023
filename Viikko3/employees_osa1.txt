@@ -1,0 +1,91 @@
+Employees - osa 1
+
+a) Minkä nimisiä osastoja (Departments) Employees-tietokannassa on ?
+
+mysql> SELECT dept_name FROM departments
+    -> JOIN dept_emp ON departments.dept_no=dept_emp.dept_no
+    -> JOIN employees ON employees.emp_no=dept_emp.emp_no
+    -> GROUP BY dept_name;
++--------------------+
+| dept_name          |
++--------------------+
+| Customer Service   |
+| Development        |
+| Finance            |
+| Human Resources    |
+| Marketing          |
+| Production         |
+| Quality Management |
+| Research           |
+| Sales              |
++--------------------+
+9 rows in set (1.76 sec)
+
+b) Tulosta, (yhden kerran kukin) mitä nimikkeitä (title) tietokannassa on.
+
+mysql> SELECT DISTINCT title FROM titles;
++--------------------+
+| title              |
++--------------------+
+| Senior Engineer    |
+| Staff              |
+| Engineer           |
+| Senior Staff       |
+| Assistant Engineer |
+| Technique Leader   |
+| Manager            |
++--------------------+
+7 rows in set (0.22 sec)
+
+c) Mikä on suurin ja pienin palkka (salary) ?
+
+mysql> SELECT MIN(salary), MAX(salary) FROM salaries;
++-------------+-------------+
+| MIN(salary) | MAX(salary) |
++-------------+-------------+
+|       38623 |      158220 |
++-------------+-------------+
+1 row in set (0.77 sec)
+
+d) Mikä on keskimääräinen palkka ?
+
+mysql> SELECT AVG(salary) FROM salaries;
++-------------+
+| AVG(salary) |
++-------------+
+|  63810.7448 |
++-------------+
+1 row in set (0.72 sec)
+
+e) Tulosta kaikki työntekijät, joiden sukunimi on Facello.
+
+	(alla vain muutama rivi esimerkkinä tulostuksesta)
+
+mysql> SELECT * FROM employees WHERE last_name LIKE "Facello";
++--------+------------+-------------+-----------+--------+------------+
+| emp_no | birth_date | first_name  | last_name | gender | hire_date  |
++--------+------------+-------------+-----------+--------+------------+
+|  10001 | 1953-09-02 | Georgi      | Facello   | M      | 1986-06-26 |
+|  10327 | 1954-04-01 | Roded       | Facello   | M      | 1987-09-18 |
+|  12751 | 1964-07-06 | Nahum       | Facello   | M      | 1995-01-09 |
+
+f) Kuinka moni työntekijä on syntynyt 1950-luvulla ?
+
+mysql> SELECT count(*) FROM employees WHERE birth_date >= '1950-1-1' AND birth_date < '2000-1-1';
++----------+
+| count(*) |
++----------+
+|   300024 |
++----------+
+1 row in set (0.07 sec)
+
+g) Montako miestä ja montako naista työntekijöissä on ?
+
+mysql> SELECT gender,count(*) FROM employees GROUP BY gender;
++--------+----------+
+| gender | count(*) |
++--------+----------+
+| M      |   179973 |
+| F      |   120051 |
++--------+----------+
+2 rows in set (0.13 sec)
