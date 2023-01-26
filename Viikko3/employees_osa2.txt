@@ -1,0 +1,164 @@
+Employees - osa 2
+
+a) Tulosta kymmenen aakkosjärjestyksessä ensimmäisen työntekijän 
+tiedot sukunimen mukaan lajiteltuna.
+
+	mysql> SELECT * FROM employees ORDER BY last_name LIMIT 10;
+	+--------+------------+------------+-----------+--------+------------+
+	| emp_no | birth_date | first_name | last_name | gender | hire_date  |
+	+--------+------------+------------+-----------+--------+------------+
+	|  11761 | 1964-07-17 | Bartek     | Aamodt    | M      | 1991-06-12 |
+	|  15427 | 1959-03-06 | Aluzio     | Aamodt    | M      | 1985-03-03 |
+	|  18182 | 1963-02-23 | Dekang     | Aamodt    | F      | 1988-05-25 |
+	|  16572 | 1956-11-26 | Matt       | Aamodt    | M      | 1987-06-16 |
+	|  12791 | 1960-06-16 | Mokhtar    | Aamodt    | M      | 1994-08-14 |
+	|  12516 | 1958-06-25 | Sreenivas  | Aamodt    | F      | 1990-03-06 |
+	|  12982 | 1952-12-08 | Sachem     | Aamodt    | F      | 1992-01-11 |
+	|  17400 | 1962-03-22 | Basim      | Aamodt    | F      | 1991-09-15 |
+	|  19898 | 1957-03-09 | Vidar      | Aamodt    | M      | 1988-08-06 |
+	|  17885 | 1954-02-01 | Takanari   | Aamodt    | M      | 1996-08-19 |
+	+--------+------------+------------+-----------+--------+------------+
+	10 rows in set (0.23 sec)
+	
+b) Sama kuten edellä, mutta sukunimen JA etunimen mukaan lajiteltuna.
+
+	mysql> SELECT * FROM employees
+		-> ORDER BY last_name,first_name
+		-> LIMIT 10;
+	+--------+------------+------------+-----------+--------+------------+
+	| emp_no | birth_date | first_name | last_name | gender | hire_date  |
+	+--------+------------+------------+-----------+--------+------------+
+	| 258641 | 1961-05-23 | Abdelkader | Aamodt    | M      | 1994-12-02 |
+	| 258005 | 1953-02-17 | Adhemar    | Aamodt    | F      | 1991-01-21 |
+	| 455773 | 1960-05-04 | Aemilian   | Aamodt    | M      | 1988-04-21 |
+	| 436560 | 1959-03-16 | Alagu      | Aamodt    | F      | 1991-10-17 |
+	| 266651 | 1959-05-28 | Aleksander | Aamodt    | F      | 1989-03-29 |
+	| 487598 | 1962-03-03 | Alexius    | Aamodt    | M      | 1994-12-30 |
+	| 216963 | 1960-07-16 | Alois      | Aamodt    | M      | 1995-08-24 |
+	|  15427 | 1959-03-06 | Aluzio     | Aamodt    | M      | 1985-03-03 |
+	| 100860 | 1964-06-20 | Amabile    | Aamodt    | F      | 1993-02-06 |
+	| 107070 | 1954-04-24 | Anestis    | Aamodt    | M      | 1990-10-30 |
+	+--------+------------+------------+-----------+--------+------------+
+	10 rows in set (0.25 sec)
+	
+c) Tulosta viiden viimeksi palkatun työntekijän tiedot.
+
+	mysql> SELECT * FROM employees ORDER BY hire_date DESC LIMIT 5;
+	+--------+------------+------------+-----------+--------+------------+
+	| emp_no | birth_date | first_name | last_name | gender | hire_date  |
+	+--------+------------+------------+-----------+--------+------------+
+	| 463807 | 1964-06-12 | Bikash     | Covnot    | M      | 2000-01-28 |
+	| 428377 | 1957-05-09 | Yucai      | Gerlach   | M      | 2000-01-23 |
+	| 499553 | 1954-05-06 | Hideyuki   | Delgrande | F      | 2000-01-22 |
+	| 222965 | 1959-08-07 | Volkmar    | Perko     | F      | 2000-01-13 |
+	|  47291 | 1960-09-09 | Ulf        | Flexer    | M      | 2000-01-12 |
+	+--------+------------+------------+-----------+--------+------------+
+	5 rows in set (0.10 sec)
+	
+
+d) Kenellä on suurin palkka?
+
+	mysql> SELECT * FROM salaries
+		-> JOIN employees ON employees.emp_no=salaries.emp_no
+		-> ORDER BY salary DESC
+		-> LIMIT 1;
+	+--------+--------+------------+------------+--------+------------+------------+-----------+--------+------------+
+	| emp_no | salary | from_date  | to_date    | emp_no | birth_date | first_name | last_name | gender | hire_date  |
+	+--------+--------+------------+------------+--------+------------+------------+-----------+--------+------------+
+	|  43624 | 158220 | 2002-03-22 | 9999-01-01 |  43624 | 1953-11-14 | Tokuyasu   | Pesch     | M      | 1985-03-26 |
+	+--------+--------+------------+------------+--------+------------+------------+-----------+--------+------------+
+	1 row in set (1.94 sec)
+
+e) Kenellä on pienin palkka?
+
+mysql> SELECT * FROM salaries
+    -> JOIN employees ON employees.emp_no=salaries.emp_no
+    -> ORDER BY salary ASC
+    -> LIMIT 1;
++--------+--------+------------+------------+--------+------------+------------+-----------+--------+------------+
+| emp_no | salary | from_date  | to_date    | emp_no | birth_date | first_name | last_name | gender | hire_date  |
++--------+--------+------------+------------+--------+------------+------------+-----------+--------+------------+
+| 253406 |  38623 | 2002-02-20 | 9999-01-01 | 253406 | 1953-09-23 | Olivera    | Baek      | M      | 1994-07-04 |
++--------+--------+------------+------------+--------+------------+------------+-----------+--------+------------+
+1 row in set (1.98 sec)
+	
+f) Tulosta työntekijät, jotka tienaa yli 150 tonttua.
+
+	mysql> SELECT * FROM employees JOIN salaries ON
+		-> employees.emp_no=salaries.emp_no WHERE salary>150000;
+	+--------+------------+------------+-----------+--------+------------+--------+--------+------------+------------+
+	| emp_no | birth_date | first_name | last_name | gender | hire_date  | emp_no | salary | from_date  | to_date    |
+	+--------+------------+------------+-----------+--------+------------+--------+--------+------------+------------+
+	|  43624 | 1953-11-14 | Tokuyasu   | Pesch     | M      | 1985-03-26 |  43624 | 151115 | 1998-03-23 | 1999-03-23 |
+	|  43624 | 1953-11-14 | Tokuyasu   | Pesch     | M      | 1985-03-26 |  43624 | 153166 | 1999-03-23 | 2000-03-22 |
+	|  43624 | 1953-11-14 | Tokuyasu   | Pesch     | M      | 1985-03-26 |  43624 | 153458 | 2000-03-22 | 2001-03-22 |
+	
+	Pitkä tulostus mutta tuossa pari riviä todisteena.
+	
+g) Kuinka monta työntekijää työskentelee myynnissä entä markkinoinnissa
+
+	mysql> SELECT dept_name,COUNT(*) AS Lukumaara FROM departments
+		-> JOIN dept_emp ON departments.dept_no=dept_emp.dept_no
+		-> JOIN employees ON employees.emp_no=dept_emp.emp_no
+		-> WHERE dept_name='Sales';
+	+-----------+-----------+
+	| dept_name | Lukumaara |
+	+-----------+-----------+
+	| Sales     |     52245 |
+	+-----------+-----------+
+	1 row in set (0.27 sec)	
+
+	mysql> SELECT dept_name,COUNT(*) AS Lukumaara FROM departments
+		-> JOIN dept_emp ON departments.dept_no=dept_emp.dept_no
+		-> JOIN employees ON employees.emp_no=dept_emp.emp_no
+		-> WHERE dept_name='Marketing';
+	+-----------+-----------+
+	| dept_name | Lukumaara |
+	+-----------+-----------+
+	| Marketing |     20211 |
+	+-----------+-----------+
+	1 row in set (0.25 sec)
+	
+h) Tulosta kaikkien osastonjohtajien (Department Managers) 
+	etunimi, sukunimi ja osasto, jolla työskentelee.
+	
+	mysql> SELECT first_name,last_name,dept_name FROM dept_manager
+		-> JOIN departments ON departments.dept_no = dept_manager.dept_no
+		-> JOIN employees ON employees.emp_no = dept_manager.emp_no
+		-> WHERE to_date='9999-01-01';
+	+------------+------------+--------------------+
+	| first_name | last_name  | dept_name          |
+	+------------+------------+--------------------+
+	| Vishwani   | Minakawa   | Marketing          |
+	| Isamu      | Legleitner | Finance            |
+	| Karsten    | Sigstam    | Human Resources    |
+	| Oscar      | Ghazalie   | Production         |
+	| Leon       | DasSarma   | Development        |
+	| Dung       | Pesch      | Quality Management |
+	| Hauke      | Zhang      | Sales              |
+	| Hilary     | Kambil     | Research           |
+	| Yuchang    | Weedman    | Customer Service   |
+	+------------+------------+--------------------+
+	9 rows in set (0.00 sec)
+	
+i) Myynnissä ja markkinoinnissa olevien keskipalkka?
+
+	mysql> SELECT dept_name, AVG(salary) FROM salaries
+		-> JOIN employees ON employees.emp_no=salaries.emp_no
+		-> JOIN dept_emp ON employees.emp_no=dept_emp.emp_no
+		-> JOIN departments ON dept_emp.dept_no=departments.dept_no
+		-> GROUP BY dept_name;
+	+--------------------+-------------+
+	| dept_name          | AVG(salary) |
+	+--------------------+-------------+
+	| Development        |  59478.9012 |
+	| Sales              |  80667.6058 |
+	| Production         |  59605.4825 |
+	| Human Resources    |  55574.8794 |
+	| Research           |  59665.1817 |
+	| Quality Management |  57251.2719 |
+	| Customer Service   |  58770.3665 |
+	| Marketing          |  71913.2000 |
+	| Finance            |  70489.3649 |
+	+--------------------+-------------+
+	9 rows in set (9.08 sec)
