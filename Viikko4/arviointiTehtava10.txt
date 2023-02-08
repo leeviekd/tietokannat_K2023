@@ -1,0 +1,76 @@
+Kyselyjä arviointitietokannasta tehtävä 10
+
+1) Tulosta kaikki opiskelijat, joilla on tietokannassa hylätty arvosana
+
+	mysql> SELECT Etunimi,Sukunimi FROM Opiskelija
+    -> JOIN Arviointi ON arviointi.idOpiskelija=Opiskelija.idOpiskelija
+    -> WHERE arviointi.arvosana=0;
+	+---------+----------+
+	| Etunimi | Sukunimi |
+	+---------+----------+
+	| Aku     | Ankka    |
+	+---------+----------+
+	1 row in set (0.00 sec)
+
+2) Tulosta kaikki Fysiikka 3-kurssin hyväksytysti suorittaneet
+
+	mysql> SELECT Etunimi,Sukunimi,Nimi,Arvosana FROM Opiskelija
+		-> JOIN Arviointi ON arviointi.idOpiskelija=Opiskelija.idOpiskelija
+		-> JOIN Opintojakso ON opintojakso.idOpintojakso=arviointi.idOpintojakso
+		-> WHERE arviointi.arvosana>0 AND Nimi='Fysiikka 3';
+	+---------+----------+------------+----------+
+	| Etunimi | Sukunimi | Nimi       | Arvosana |
+	+---------+----------+------------+----------+
+	| Aku     | Ankka    | Fysiikka 3 |        1 |
+	| Roope   | Ankka    | Fysiikka 3 |        2 |
+	| Iines   | Ankka    | Fysiikka 3 |        3 |
+	| Mikki   | Hiiri    | Fysiikka 3 |        4 |
+	| Hessu   | Hopo     | Fysiikka 3 |        5 |
+	+---------+----------+------------+----------+
+	5 rows in set (0.00 sec)
+
+3) Mille kursseille Hessu on osallistunut ?
+
+	mysql> SELECT Etunimi,Sukunimi,Nimi FROM Opiskelija
+		-> JOIN Arviointi ON arviointi.idOpiskelija=Opiskelija.idOpiskelija
+		-> JOIN Opintojakso ON opintojakso.idOpintojakso=arviointi.idOpintojakso
+		-> WHERE Etunimi='Hessu';
+	+---------+----------+-------------+
+	| Etunimi | Sukunimi | Nimi        |
+	+---------+----------+-------------+
+	| Hessu   | Hopo     | Fysiikka 3  |
+	| Hessu   | Hopo     | Tietokannat |
+	+---------+----------+-------------+
+	2 rows in set (0.00 sec)
+
+4) Mikä on Akun opintosuoritusten keskiarvo ?
+
+	mysql> SELECT Etunimi,Sukunimi,AVG(arvosana) FROM Opiskelija
+		-> JOIN Arviointi ON arviointi.idOpiskelija=Opiskelija.idOpiskelija
+		-> JOIN Opintojakso ON opintojakso.idOpintojakso=arviointi.idOpintojakso
+		-> WHERE Etunimi='Aku'
+		-> GROUP BY arviointi.idOpiskelija;
+	+---------+----------+---------------+
+	| Etunimi | Sukunimi | AVG(arvosana) |
+	+---------+----------+---------------+
+	| Aku     | Ankka    |        0.6667 |
+	+---------+----------+---------------+
+	1 row in set (0.00 sec)
+
+5) Millä opintojaksoilla ei ole yhtään suoritusmerkintää ? 
+(Vihje: Tarvitset tässä left tai right joinia...)
+
+	mysql> SELECT opintojakso.*
+		-> FROM Opintojakso
+		-> LEFT JOIN arviointi ON opintojakso.idOpintojakso=arviointi.idOpintojakso
+		-> WHERE arviointi.idOpintojakso is NULL;
+	+---------------+--------+---------+--------------------------+
+	| idOpintojakso | Koodi  | Laajuus | Nimi                     |
+	+---------------+--------+---------+--------------------------+
+	|             2 | T20042 |       3 | Liike-elaman tapatietous |
+	|             4 | T20044 |       6 | Elektroniikan perusteet  |
+	|             5 | T20045 |       5 | Kellarihumppa            |
+	|             6 | T20046 |       3 | Matematiikka 2           |
+	|             8 | T20048 |       3 | VHDL-kieli               |
+	+---------------+--------+---------+--------------------------+
+	5 rows in set (0.00 sec)
